@@ -1,166 +1,307 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Custodial Supply Request</title>
-</head>
-<body>
-    <h1>Custodial Supply Request</h1>
+<script>
+// -------------------------------
+// PRODUCT DATABASE (UPDATED)
+// -------------------------------
+const products = {
 
-    <form id="supplyForm">
-        <label for="requesterName">Your Name:</label>
-        <input type="text" id="requesterName" name="requesterName" required>
+  // PAPER PRODUCTS
+  "Natural Multifold Towel": {
+    short: "Multifold Towels",
+    description: "Natural Multifold Towel, GEN1508",
+    vendor: "VIP Office",
+    url: "https://www.vipoffice.com/Product/GJO/21040/11970425"
+  },
 
-        <div id="itemsContainer">
-            <div class="item-block" data-index="1">
-                <h3>Item 1</h3>
+  "Toilet Tissue": {
+    short: "Toilet Tissue",
+    description: "Small roll bath tissue, GEN500",
+    vendor: "TBD",
+    url: "TBD"
+  },
 
-                <label for="itemSelect1">Item:</label>
-                <select id="itemSelect1" name="itemSelect1" onchange="updateItemFields(1)" required>
-                    <option value="">-- Select an item --</option>
-                    <option value="toilet_tissue">Toilet Tissue</option>
-                    <option value="multifold_towel">Multi Fold Towel</option>
-                    <option value="can_liners">Can Liners</option>
-                    <option value="hand_soap">Hand Soap</option>
-                    <option value="disinfectant">Disinfectant</option>
-                </select>
+  // TRASH BAGS
+  "Black Can Liners 16 gal": {
+    short: "Trash bags, small",
+    description: "Everyday Genuine Joe, Black can liners. 1.0mil/500 per case/16 gallon",
+    vendor: "VIP Office",
+    url: "https://www.vipoffice.com/Product/EJO/LD243212/1076289124"
+  },
 
-                <label for="description1">Description:</label>
-                <input type="text" id="description1" name="description1" readonly>
+  "Plasticplace 65 gal": {
+    short: "Trash bags, large",
+    description: "Plasticplace, 50\"x60\" black trash bag, 100 count/65 gallon/1.2 thickness",
+    vendor: "Amazon",
+    url: "https://www.amazon.com/dp/B01G24GWUE"
+  },
 
-                <label for="vendor1">Vendor:</label>
-                <input type="text" id="vendor1" name="vendor1" readonly>
+  "Green Liner Cafeteria Bags": {
+    short: "Trash bags, green",
+    description: "Green Liner, Premium quality can liners, 100 Bags per case, 1.1mil, CPPG46-CS",
+    vendor: "SunCoast Paper and Chemical",
+    url: "https://suncoastpaper.com/p/CPPG46/Green-Liner-40-x-46-11-mil/"
+  },
 
-                <label for="link1">Link:</label>
-                <input type="text" id="link1" name="link1" readonly>
+  // CLEANERS & CHEMICALS
+  "Symmetry Hand Wash": {
+    short: "Symmetry Hand Wash",
+    description: "Symmetry, Green certified foaming hand wash, 6 count x 1250ml",
+    vendor: "Haskins Doyle",
+    url: "https://www.haskinsinc.com/catalog/CatalogProductDetail.aspx?itemno=BUC-90091120"
+  },
 
-                <label for="quantity1">Quantity:</label>
-                <input type="number" id="quantity1" name="quantity1" min="1" required>
-            </div>
-        </div>
+  "Buckeye E15": {
+    short: "Buckeye E15 Cleaner",
+    description: "Buckeye Eco E15 Hydrogen Peroxide Cleaner",
+    vendor: "Haskins Doyle",
+    url: "https://www.haskinsinc.com/catalog/CatalogProductDetail.aspx?itemno=BUC-60151400"
+  },
 
-        <button type="button" onclick="addItem()">Add Item</button>
-        <button type="submit">Submit Request</button>
-    </form>
+  "Buckeye E23": {
+    short: "Buckeye E23 Disinfectant",
+    description: "Buckeye Eco E23 Disinfectant",
+    vendor: "Haskins Doyle",
+    url: "https://www.haskinsinc.com/catalog/CatalogProductDetail.aspx?itemno=BUC-60231400"
+  },
 
-    <script>
-        // Item data (you can expand this list)
-        const itemData = {
-            toilet_tissue: {
-                description: "Toilet tissue, 2-ply, case",
-                vendor: "Vendor A",
-                link: "https://example.com/toilet-tissue"
-            },
-            multifold_towel: {
-                description: "Multi-fold paper towels, case",
-                vendor: "Vendor B",
-                link: "https://example.com/multifold-towel"
-            },
-            can_liners: {
-                description: "Can liners, 55 gallon, box",
-                vendor: "Vendor C",
-                link: "https://example.com/can-liners"
-            },
-            hand_soap: {
-                description: "Foaming hand soap, case",
-                vendor: "Vendor D",
-                link: "https://example.com/hand-soap"
-            },
-            disinfectant: {
-                description: "Disinfectant cleaner, gallon",
-                vendor: "Vendor E",
-                link: "https://example.com/disinfectant"
-            }
-        };
+  "Buckeye E33": {
+    short: "Buckeye E33 Floor Cleaner",
+    description: "Buckeye Eco E33 Floor Cleaner",
+    vendor: "Haskins Doyle",
+    url: "https://www.haskinsinc.com/catalog/CatalogProductDetail.aspx?itemno=BUC-60331400"
+  },
 
-        let itemCount = 1;
+  "OdoBan Lavender": {
+    short: "OdoBan Lavender",
+    description: "OdoBan, Lavender, 4 gallons per case",
+    vendor: "VIP Office",
+    url: "https://www.vipoffice.com/Product/ODO/911162G4CT/1047998588"
+  },
 
-        function updateItemFields(index) {
-            const select = document.getElementById("itemSelect" + index);
-            const value = select.value;
+  "OdoBan Eucalyptus": {
+    short: "OdoBan Eucalyptus",
+    description: "Odoban, Eucalyptus, 4 gallons per case",
+    vendor: "VIP Office",
+    url: "https://www.vipoffice.com/Product/ODO/911062G4CT/1047998587"
+  },
 
-            const descInput = document.getElementById("description" + index);
-            const vendorInput = document.getElementById("vendor" + index);
-            const linkInput = document.getElementById("link" + index);
+  "Purox Klean Bleach": {
+    short: "Purox Klean Bleach",
+    description: "Purox Klean Bleach",
+    vendor: "TBD",
+    url: "TBD"
+  },
 
-            if (itemData[value]) {
-                descInput.value = itemData[value].description;
-                vendorInput.value = itemData[value].vendor;
-                linkInput.value = itemData[value].link;
-            } else {
-                descInput.value = "";
-                vendorInput.value = "";
-                linkInput.value = "";
-            }
-        }
+  "Super-Sorb Lemon": {
+    short: "Super-Sorb Lemon",
+    description: "Super-Sorb, lemon, 3 pack of 12 oz cans",
+    vendor: "Amazon",
+    url: "https://www.amazon.com/Super-Instant-Absorbent-Clean-Vomit/dp/B07PFYDH1T"
+  },
 
-        function addItem() {
-            itemCount++;
-            const container = document.getElementById("itemsContainer");
-            const newBlock = document.createElement("div");
-            newBlock.className = "item-block";
-            newBlock.setAttribute("data-index", itemCount);
+  "Boardwalk Foaming Cleaner": {
+    short: "Boardwalk Foaming Cleaner",
+    description: "Boardwalk all purpose foaming cleaner, 12 cans of 19 oz aerosol spray",
+    vendor: "Amazon",
+    url: "https://www.amazon.com/Boardwalk-All-Purpose-Foaming-Cleaner-ammonia/dp/B009R6049K"
+  },
 
-            newBlock.innerHTML = `
-                <h3>Item ${itemCount}</h3>
+  "Sprayway Glass Cleaner": {
+    short: "Sprayway Glass Cleaner",
+    description: "Sprayway glass cleaner, SW050, Pack of 12 cans",
+    vendor: "Amazon",
+    url: "https://www.amazon.com/dp/B000BQPIGY"
+  }
+};
 
-                <label for="itemSelect${itemCount}">Item:</label>
-                <select id="itemSelect${itemCount}" name="itemSelect${itemCount}" onchange="updateItemFields(${itemCount})" required>
-                    <option value="">-- Select an item --</option>
-                    <option value="toilet_tissue">Toilet Tissue</option>
-                    <option value="multifold_towel">Multi Fold Towel</option>
-                    <option value="can_liners">Can Liners</option>
-                    <option value="hand_soap">Hand Soap</option>
-                    <option value="disinfectant">Disinfectant</option>
-                </select>
+const maxItems = 19;
+let itemCount = 0;
 
-                <label for="description${itemCount}">Description:</label>
-                <input type="text" id="description${itemCount}" name="description${itemCount}" readonly>
+// -------------------------------
+// AUTO-SAVE REQUESTER NAME
+// -------------------------------
+const nameField = document.getElementById("requesterName");
+nameField.value = localStorage.getItem("requesterName") || "";
+nameField.addEventListener("input", () => {
+  localStorage.setItem("requesterName", nameField.value);
+});
 
-                <label for="vendor${itemCount}">Vendor:</label>
-                <input type="text" id="vendor${itemCount}" name="vendor${itemCount}" readonly>
+// -------------------------------
+// CREATE ITEM BLOCK
+// -------------------------------
+function createItemBlock() {
+  if (itemCount >= maxItems) return;
 
-                <label for="link${itemCount}">Link:</label>
-                <input type="text" id="link${itemCount}" name="link${itemCount}" readonly>
+  itemCount++;
 
-                <label for="quantity${itemCount}">Quantity:</label>
-                <input type="number" id="quantity${itemCount}" name="quantity${itemCount}" min="1" required>
-            `;
+  const block = document.createElement("div");
+  block.className = "item-block";
 
-            container.appendChild(newBlock);
-        }
+  block.innerHTML = `
+    <label>Product</label>
+    <select class="productSelect">
+      <option class="category-header" disabled>──────── Paper Products ────────</option>
+      <option value="Natural Multifold Towel">Multifold Towels</option>
+      <option value="Toilet Tissue">Toilet Tissue</option>
 
-        document.getElementById("supplyForm").addEventListener("submit", function(e) {
-            e.preventDefault();
+      <option class="category-header" disabled>──────── Trash Bags ────────</option>
+      <option value="Black Can Liners 16 gal">Trash bags, small</option>
+      <option value="Plasticplace 65 gal">Trash bags, large</option>
+      <option value="Green Liner Cafeteria Bags">Trash bags, green</option>
 
-            const name = document.getElementById("requesterName").value;
-            const blocks = document.querySelectorAll(".item-block");
-            let body = `Custodial Supply Request\n\nRequester: ${name}\n\nItems:\n`;
+      <option class="category-header" disabled>──────── Cleaners & Chemicals ────────</option>
+      <option value="Symmetry Hand Wash">Symmetry Hand Wash</option>
+      <option value="Buckeye E15">Buckeye E15 Cleaner</option>
+      <option value="Buckeye E23">Buckeye E23 Disinfectant</option>
+      <option value="Buckeye E33">Buckeye E33 Floor Cleaner</option>
+      <option value="OdoBan Lavender">OdoBan Lavender</option>
+      <option value="OdoBan Eucalyptus">OdoBan Eucalyptus</option>
+      <option value="Purox Klean Bleach">Purox Klean Bleach</option>
+      <option value="Super-Sorb Lemon">Super-Sorb Lemon</option>
+      <option value="Boardwalk Foaming Cleaner">Boardwalk Foaming Cleaner</option>
+      <option value="Sprayway Glass Cleaner">Sprayway Glass Cleaner</option>
 
-            blocks.forEach(block => {
-                const index = block.getAttribute("data-index");
-                const itemSelect = document.getElementById("itemSelect" + index);
-                const desc = document.getElementById("description" + index).value;
-                const vendor = document.getElementById("vendor" + index).value;
-                const link = document.getElementById("link" + index).value;
-                const qty = document.getElementById("quantity" + index).value;
+      <option class="category-header" disabled>──────── Custom Request ────────</option>
+      <option value="Custom Request">Custom Request</option>
+    </select>
 
-                if (itemSelect.value) {
-                    body += `\nItem ${index}:\n`;
-                    body += `- Item: ${itemSelect.options[itemSelect.selectedIndex].text}\n`;
-                    body += `- Description: ${desc}\n`;
-                    body += `- Vendor: ${vendor}\n`;
-                    body += `- Link: ${link}\n`;
-                    body += `- Quantity: ${qty}\n`;
-                }
-            });
+    <label>Description</label>
+    <input type="text" class="descField" placeholder="" readonly>
 
-            const mailto = "mailto:bookkeeper@example.com"
-                + "?subject=" + encodeURIComponent("Custodial Supply Request")
-                + "&body=" + encodeURIComponent(body);
+    <label>Vendor</label>
+    <input type="text" class="vendorField" placeholder="" readonly>
 
-            window.location.href = mailto;
-        });
-    </script>
-</body>
-</html>
+    <label>URL</label>
+    <input type="text" class="urlField" placeholder="" readonly>
+
+    <label>Quantity</label>
+    <input type="number" class="qtyField" min="1">
+
+    <button class="remove-btn">Remove Item</button>
+  `;
+
+  document.getElementById("supplyForm").appendChild(block);
+
+  const productSelect = block.querySelector(".productSelect");
+  const descField = block.querySelector(".descField");
+  const vendorField = block.querySelector(".vendorField");
+  const urlField = block.querySelector(".urlField");
+
+  productSelect.addEventListener("change", function () {
+    const value = this.value;
+
+    if (value === "Custom Request") {
+      descField.readOnly = false;
+      vendorField.readOnly = false;
+      urlField.readOnly = false;
+
+      descField.placeholder = "enter item description";
+      vendorField.placeholder = "enter vendor name";
+      urlField.placeholder = "enter link to item (i.e. Amazon, Walmart, Target)";
+
+      descField.value = "";
+      vendorField.value = "";
+      urlField.value = "";
+    } else {
+      const p = products[value];
+
+      descField.readOnly = true;
+      vendorField.readOnly = true;
+      urlField.readOnly = true;
+
+      descField.placeholder = "";
+      vendorField.placeholder = "";
+      urlField.placeholder = "";
+
+      descField.value = p.description;
+      vendorField.value = p.vendor;
+      urlField.value = p.url;
+    }
+
+    validateForm();
+  });
+
+  block.querySelector(".qtyField").addEventListener("input", validateForm);
+
+  block.querySelector(".remove-btn").addEventListener("click", () => {
+    block.remove();
+    itemCount--;
+    validateForm();
+  });
+
+  validateForm();
+}
+
+// -------------------------------
+// VALIDATION
+// -------------------------------
+function validateForm() {
+  const blocks = document.querySelectorAll(".item-block");
+  const submitBtn = document.getElementById("submitBtn");
+
+  let valid = blocks.length > 0 && nameField.value.trim() !== "";
+
+  blocks.forEach(block => {
+    const product = block.querySelector(".productSelect").value;
+    const qty = block.querySelector(".qtyField").value;
+    if (!product || qty <= 0) valid = false;
+  });
+
+  submitBtn.disabled = !valid;
+  submitBtn.classList.toggle("enabled", valid);
+}
+
+// -------------------------------
+// SUBMIT FORM
+// -------------------------------
+document.getElementById("submitBtn").addEventListener("click", () => {
+  const requester = nameField.value.trim();
+  const timestamp = new Date().toLocaleString();
+
+  const blocks = document.querySelectorAll(".item-block");
+
+  let emailBody = `
+Custodial Supply Request
+Submitted by: ${requester}
+Date: ${timestamp}
+
+`;
+
+  let i = 1;
+  blocks.forEach(block => {
+    const product = block.querySelector(".productSelect").value;
+    const qty = block.querySelector(".qtyField").value;
+    const desc = block.querySelector(".descField").value;
+    const vendor = block.querySelector(".vendorField").value;
+    const url = block.querySelector(".urlField").value;
+
+    emailBody += `
+Item ${i}:
+Product: ${product}
+Quantity: ${qty}
+Description: ${desc}
+Vendor: ${vendor}
+URL: ${url}
+
+`;
+    i++;
+  });
+
+  emailjs.send("YOUR_SERVICE_ID_HERE", "YOUR_TEMPLATE_ID_HERE", {
+    subject: "Custodial Supply Request",
+    message: emailBody
+  }).then(() => {
+    alert("Request submitted!");
+  }).catch(err => {
+    alert("Error sending request.");
+    console.error(err);
+  });
+});
+
+// -------------------------------
+// AUTO-CREATE FIRST ITEM BLOCK
+// -------------------------------
+createItemBlock();
+
+document.getElementById("addItemBtn").addEventListener("click", createItemBlock);
+
+</script>

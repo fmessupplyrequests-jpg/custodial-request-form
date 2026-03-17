@@ -1,9 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Custodial Supply Request</title>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background: #f4f4f4;
+  }
+  h2 {
+    text-align: center;
+  }
+  label {
+    font-weight: bold;
+    margin-top: 15px;
+    display: block;
+  }
+  input, select {
+    width: 100%;
+    padding: 14px;
+    font-size: 18px;
+    margin-top: 5px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+  .item-block {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+    border: 1px solid #ddd;
+  }
+  .remove-btn {
+    background: #b30000;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    margin-top: 10px;
+    width: 100%;
+  }
+  #addItemBtn, #submitBtn {
+    width: 100%;
+    padding: 16px;
+    font-size: 20px;
+    margin-top: 25px;
+    border: none;
+    border-radius: 8px;
+  }
+  #addItemBtn {
+    background: #444;
+    color: white;
+  }
+  #submitBtn {
+    background: #0078d4;
+    color: white;
+    opacity: 0.5;
+  }
+  #submitBtn.enabled {
+    opacity: 1;
+  }
+
+  /* Category header styling (Option B) */
+  option.category-header {
+    font-weight: bold;
+    background: #e0e0e0;
+    color: #000;
+  }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+(function() {
+  emailjs.init("9Oy_yjfgv48qihRMN");
+})();
+</script>
+
+</head>
+<body>
+
+<h2>Custodial Supply Request</h2>
+
+<label>Your Name</label>
+<input type="text" id="requesterName" placeholder="Enter your name">
+
+<form id="supplyForm"></form>
+
+<button id="addItemBtn">Add Item</button>
+<button id="submitBtn" disabled>Submit Request</button>
+
 <script>
 // -------------------------------
 // PRODUCT DATABASE (UPDATED)
 // -------------------------------
 const products = {
-<!-- cache refresh -->
+
   // PAPER PRODUCTS
   "Natural Multifold Towel": {
     short: "Multifold Towels",
@@ -286,7 +379,7 @@ URL: ${url}
     i++;
   });
 
-  emailjs.send("YOUR_SERVICE_ID_HERE", "YOUR_TEMPLATE_ID_HERE", {
+  emailjs.send("service_gjboq38", "template_xob2g87", {
     subject: "Custodial Supply Request",
     message: emailBody
   }).then(() => {
@@ -305,3 +398,6 @@ createItemBlock();
 document.getElementById("addItemBtn").addEventListener("click", createItemBlock);
 
 </script>
+
+</body>
+</html>

@@ -63,12 +63,23 @@
     opacity: 1;
   }
 
-  /* Category header styling (Option B) */
-  option.category-header {
-    font-weight: bold;
-    background: #e0e0e0;
-    color: #000;
-  }
+/* Clean mobile-friendly category headers */
+option.category-header {
+  font-weight: 700;
+  background: #f0f0f0;
+  color: #333;
+  padding: 10px 0;
+  font-size: 16px;
+  text-transform: uppercase;
+  border-bottom: 1px solid #d0d0d0;
+  border-top: 1px solid #d0d0d0;
+}
+
+/* Prevent accidental selection highlight */
+option.category-header:checked,
+option.category-header:focus {
+  background: #f0f0f0 !important;
+}
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>

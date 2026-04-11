@@ -287,7 +287,7 @@ let itemCount = 0;
 // AUTO-SAVE REQUESTER NAME
 // -------------------------------
 const nameField = document.getElementById("requesterName");
-nameField.value = localStorage.getItem("requesterName") || "";
+nameField.value = "";
 nameField.addEventListener("input", () => {
   localStorage.setItem("requesterName", nameField.value);
 });

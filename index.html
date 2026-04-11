@@ -109,7 +109,17 @@ option.category-header {
 <h2>Supply Request</h2>
 
 <label>Your Name</label>
-<input type="text" id="requesterName" placeholder="Enter your name">
+<input 
+    type="text" 
+    id="requesterName" 
+    name="requesterName"
+    placeholder="Enter your name"
+    autocomplete="off"
+    autocorrect="off"
+    autocapitalize="none"
+    spellcheck="false"
+    required
+>
 
 <form id="supplyForm"></form>
 
@@ -282,15 +292,6 @@ const products = {
 
 const maxItems = 19;
 let itemCount = 0;
-
-// -------------------------------
-// AUTO-SAVE REQUESTER NAME
-// -------------------------------
-const nameField = document.getElementById("requesterName");
-nameField.value = localStorage.getItem("requesterName") || "";
-nameField.addEventListener("input", () => {
-  localStorage.setItem("requesterName", nameField.value);
-});
 
 // -------------------------------
 // CREATE ITEM BLOCK

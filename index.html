@@ -558,24 +558,63 @@ function createItemBlock() {
   validateForm();
 }
 
-// -------------------------------
-// VALIDATION
-// -------------------------------
+// ------------------------------
+// FORM VALIDATION + FIELD LOGIC
+// ------------------------------
+
 function validateForm() {
-  const blocks = document.querySelectorAll(".item-block");
-  const submitBtn = document.getElementById("submitBtn");
+  const requesterName = document.getElementById("requesterName").value.trim();
+  const items = document.querySelectorAll(".item-block");
 
-  let valid = blocks.length > 0 && nameField.value.trim() !== "";
+  let allItemsValid = true;
 
-  blocks.forEach(block => {
-    const product = block.querySelector(".productSelect").value;
-    const qty = block.querySelector(".qtyField").value;
-    if (!product || qty <= 0) valid = false;
+  items.forEach(item => {
+    const product = item.querySelector(".product-dropdown").value.trim();
+    const qty = item.querySelector(".quantity-field").value.trim();
+    const desc = item.querySelector(".description-field")?.value.trim() || "";
+    const vendor = item.querySelector(".vendor-field")?.value.trim() || "";
+    const url = item.querySelector(".url-field")?.value.trim() || "";
+
+    // Custom Request requires ALL fields
+    if (product === "Custom Request") {
+      if (!product || !qty || !desc || !vendor || !url) {
+        allItemsValid = false;
+      }
+    } else {
+      // Normal items only require product + quantity
+      if (!product || !qty) {
+        allItemsValid = false;
+      }
+    }
   });
 
-  submitBtn.disabled = !valid;
-  submitBtn.classList.toggle("enabled", valid);
+  const formIsValid = requesterName && allItemsValid;
+  document.getElementById("submitBtn").disabled = !formIsValid;
 }
+
+// Reset quantity when product dropdown changes
+document.addEventListener("change", (e) => {
+  if (e.target.classList.contains("product-dropdown")) {
+    const itemBlock = e.target.closest(".item-block");
+    const qtyField = itemBlock.querySelector(".quantity-field");
+
+    qtyField.value = ""; // reset quantity
+    validateForm();
+  }
+});
+
+// Revalidate on ANY input change
+document.addEventListener("input", (e) => {
+  if (
+    e.target.classList.contains("quantity-field") ||
+    e.target.classList.contains("description-field") ||
+    e.target.classList.contains("vendor-field") ||
+    e.target.classList.contains("url-field") ||
+    e.target.id === "requesterName"
+  ) {
+    validateForm();
+  }
+});
 
 // -------------------------------
 // SUBMIT FORM

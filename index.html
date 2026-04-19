@@ -63,12 +63,16 @@
     color: white;
   }
   #submitBtn {
-    background: #0078d4;
-    color: white;
-    opacity: 0.5;
+  background: #0078d4; /* dark blue */
+  color: white;
+  opacity: 1;
+  cursor: pointer;
   }
-  #submitBtn.enabled {
-    opacity: 1;
+
+  #submitBtn:disabled {
+  background: #0078d4; /* same color, but dimmed */
+  opacity: 0.5;
+  cursor: not-allowed;
   }
 
 /* Category header styling (Option B) */

@@ -320,28 +320,33 @@ async function fetchPriceFromURL(url) {
     //-------------------------------
     if (url.toLowerCase().includes("walmart.com")) {
 
-    // NEW: priceInfo.currentPrice.price
-    match = clean.match(/"currentprice":\s*\{\s*"price":\s*([0-9]+\.[0-9]+)/);
+    // 1) priceInfo.currentPrice.price
+    match = clean.match(/"priceinfo":\s*\{[^}]*"currentprice":\s*\{[^}]*"price":\s*([0-9]+\.[0-9]+)/);
     if (match) return `$${match[1]}`;
 
-    // NEW: priceInfo.price
-    match = clean.match(/"priceinfo":\s*\{\s*"price":\s*([0-9]+\.[0-9]+)/);
+    // 2) currentPrice.price
+    match = clean.match(/"currentprice":\s*\{[^}]*"price":\s*([0-9]+\.[0-9]+)/);
     if (match) return `$${match[1]}`;
 
-    // OLD schema.org product block
+    // 3) price.price
+    match = clean.match(/"price":\s*\{[^}]*"price":\s*([0-9]+\.[0-9]+)/);
+    if (match) return `$${match[1]}`;
+
+    // 4) legacy schema.org product block
     match = clean.match(/"@type":"product"[^}]*"pricecurrency":"usd","price":([0-9]+\.[0-9]+)/);
     if (match) return `$${match[1]}`;
 
-    // OLD schema.org price + availability
+    // 5) legacy price + availability
     match = clean.match(/"price":([0-9]+\.[0-9]+),"availability":"https:\/\/schema\.org\/instock"/);
     if (match) return `$${match[1]}`;
 
-    // OLD schema.org pricevaliduntil
+    // 6) legacy pricevaliduntil
     match = clean.match(/"price":([0-9]+\.[0-9]+),"pricevaliduntil"/);
     if (match) return `$${match[1]}`;
 
     return "PRICE NOT AVAILABLE";
 }
+
       
     // -------------------------------
     // AMAZON

@@ -300,6 +300,30 @@ nameField.addEventListener("input", () => {
 });
 
 // -------------------------------
+// PRICE LOOKUP FUNCTION
+// -------------------------------
+async function fetchPriceFromURL(url) {
+  try {
+    const response = await fetch(url);
+    const html = await response.text();
+
+    // Regex to find prices like $12.49 or 12.49
+    const priceRegex = /\$?\s?(\d{1,3}(?:,\d{3})*(?:\.\d{2})?)/;
+    const match = html.match(priceRegex);
+
+    if (match && match[1]) {
+      let price = match[1].replace(",", "");
+      if (!price.startsWith("$")) price = "$" + price;
+      return price;
+    }
+
+    return "PRICE NOT AVAILABLE";
+  } catch (err) {
+    return "PRICE NOT AVAILABLE";
+  }
+}
+  
+// -------------------------------
 // CREATE ITEM BLOCK
 // -------------------------------
 function createItemBlock() {
@@ -359,6 +383,7 @@ function createItemBlock() {
 
     <label>URL</label>
     <input type="text" class="urlField" placeholder="" readonly>
+    <input type="hidden" class="priceField" value="">
 
     <label>Quantity</label>
     <input type="number" class="qtyField" min="1">
@@ -388,6 +413,23 @@ function createItemBlock() {
       descField.value = "";
       vendorField.value = "";
       urlField.value = "";
+      // ⭐ STEP 4 — PRICE LOOKUP FOR CUSTOM URLS
+  urlField.addEventListener("input", () => {
+    const priceField = block.querySelector(".priceField");
+    const url = urlField.value.trim();
+
+    if (url.length < 5) {
+      priceField.value = "";
+      return;
+    }
+
+    priceField.value = "Fetching...";
+
+    fetchPriceFromURL(url).then(price => {
+      priceField.value = price;
+    });
+  });
+
     } else {
       const p = products[value];
 
@@ -395,13 +437,21 @@ function createItemBlock() {
       vendorField.readOnly = true;
       urlField.readOnly = true;
 
-      descField.placeholder = "";
+           descField.placeholder = "";
       vendorField.placeholder = "";
       urlField.placeholder = "";
 
       descField.value = p.description;
       vendorField.value = p.vendor;
       urlField.value = p.url;
+
+      // ⭐ STEP 3 — PRICE LOOKUP FOR PREDEFINED PRODUCTS
+      const priceField = block.querySelector(".priceField");
+      priceField.value = "Fetching...";
+
+      fetchPriceFromURL(p.url).then(price => {
+        priceField.value = price;
+      });
     }
 
     validateForm();
@@ -460,16 +510,19 @@ Date: ${timestamp}
     const desc = block.querySelector(".descField").value;
     const vendor = block.querySelector(".vendorField").value;
     const url = block.querySelector(".urlField").value;
+    const price = block.querySelector(".priceField").value;
 
-    emailBody += `
+emailBody += `
 Item ${i}:
 Product: ${product}
 Quantity: ${qty}
 Description: ${desc}
 Vendor: ${vendor}
 URL: ${url}
+Unit Price: ${price}
 
 `;
+
     i++;
   });
 

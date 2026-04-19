@@ -336,17 +336,14 @@ async function fetchPriceFromURL(url) {
     if (match) return `$${match[1]}`;
 
     // -------------------------------
-    // 3. WALMART
+    // 3. WALMART (schema.org first)
     // -------------------------------
-    match = clean.match(/"price":\s*\{\s*"amount":\s*([0-9]+\.[0-9]+)/);
+    let schemaBlock = clean.match(/<script type="application\/ld\+json"[^>]*data-seo-id="schema-org-product"[^>]*>(.*?)<\/script>/);
+    if (schemaBlock) {
+    let schema = schemaBlock[1];
+    match = schema.match(/"price"\s*:\s*([0-9]+\.[0-9]+)/);
     if (match) return `$${match[1]}`;
-
-    match = clean.match(/"currentprice":\s*\{\s*"price":\s*([0-9]+\.[0-9]+)/);
-    if (match) return `$${match[1]}`;
-
-    match = clean.match(/"price":\s*"([0-9]+\.[0-9]+)/);
-    if (match) return `$${match[1]}`;
-
+      
     // -------------------------------
     // 4. TARGET
     // -------------------------------

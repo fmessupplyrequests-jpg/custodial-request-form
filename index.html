@@ -306,131 +306,71 @@ nameField.addEventListener("input", () => {
 // -------------------------------
 // HYBRID PRICE SCRAPER (FULL VERSION)
 // -------------------------------
-async function fetchPriceFromURL(url) {
+async function fetchPriceFromURL(url, vendor) {
   try {
-    const proxyURL = `https://gentle-field-d67e.michaeljleathers.workers.dev/?url=${encodeURIComponent(url)}`;
-    const response = await fetch(proxyURL);
+    const response = await fetch(`https://gentle-field-d67e.michaeljleathers.workers.dev/?url=${encodeURIComponent(url)}`);
     const html = await response.text();
-
     const clean = html.replace(/\s+/g, " ").toLowerCase();
     let match;
 
-    //-------------------------------
-    // WALMART (URL‑based detection)
-    //-------------------------------
-    if (url.toLowerCase().includes("walmart.com")) {
-
-    // 1) priceInfo.currentPrice.price
-    match = clean.match(/"priceinfo":\s*\{[^}]*"currentprice":\s*\{[^}]*"price":\s*([0-9]+\.[0-9]+)/);
-    if (match) return `$${match[1]}`;
-
-    // 2) currentPrice.price
-    match = clean.match(/"currentprice":\s*\{[^}]*"price":\s*([0-9]+\.[0-9]+)/);
-    if (match) return `$${match[1]}`;
-
-    // 3) price.price
-    match = clean.match(/"price":\s*\{[^}]*"price":\s*([0-9]+\.[0-9]+)/);
-    if (match) return `$${match[1]}`;
-
-    // 4) legacy schema.org product block
-    match = clean.match(/"@type":"product"[^}]*"pricecurrency":"usd","price":([0-9]+\.[0-9]+)/);
-    if (match) return `$${match[1]}`;
-
-    // 5) legacy price + availability
-    match = clean.match(/"price":([0-9]+\.[0-9]+),"availability":"https:\/\/schema\.org\/instock"/);
-    if (match) return `$${match[1]}`;
-
-    // 6) legacy pricevaliduntil
-    match = clean.match(/"price":([0-9]+\.[0-9]+),"pricevaliduntil"/);
-    if (match) return `$${match[1]}`;
-
-    return "PRICE NOT AVAILABLE";
-}
-
-      
-    // -------------------------------
+    // -----------------------
     // AMAZON
-    // -------------------------------
+    // -----------------------
     match = clean.match(/"pricetopay":\s*\{\s*"amount":\s*([0-9]+\.[0-9]+)/);
     if (match) return `$${match[1]}`;
 
     match = clean.match(/"priceamount":\s*"([0-9]+\.[0-9]+)/);
     if (match) return `$${match[1]}`;
 
-    // Amazon generic price (tightened to avoid Walmart)
     match = clean.match(/"price":\s*"\$([0-9]+\.[0-9]+)"/);
     if (match) return `$${match[1]}`;
 
-    // -------------------------------
+    // -----------------------
     // VIP OFFICE
-    // -------------------------------
-    match = clean.match(/class="price"[^>]*>\s*\$([0-9]+\.[0-9]+)/);
+    // -----------------------
+    match = clean.match(/"price":\s*"([0-9]+\.[0-9]+)"/);
     if (match) return `$${match[1]}`;
 
-    match = clean.match(/price[^<>\d]*([0-9]+\.[0-9]+)/);
+    // -----------------------
+    // WALMART (OLD BLOCK)
+    // -----------------------
+    match = clean.match(/"price":\s*"([0-9]+\.[0-9]+)"/);
     if (match) return `$${match[1]}`;
 
-    // -------------------------------
+    // -----------------------
     // TARGET
-    // -------------------------------
+    // -----------------------
     match = clean.match(/"current_retail":\s*([0-9]+\.[0-9]+)/);
     if (match) return `$${match[1]}`;
 
-    match = clean.match(/"formatted_current_price":\s*"\$([0-9]+\.[0-9]+)/);
-    if (match) return `$${match[1]}`;
-
-    // -------------------------------
+    // -----------------------
     // HOME DEPOT
-    // -------------------------------
-    match = clean.match(/"lowprice":\s*"([0-9]+\.[0-9]+)/);
+    // -----------------------
+    match = clean.match(/"price":\s*([0-9]+\.[0-9]+)/);
     if (match) return `$${match[1]}`;
 
-    match = clean.match(/"price":\s*"([0-9]+\.[0-9]+)","unit"/);
-    if (match) return `$${match[1]}`;
-
-    // -------------------------------
+    // -----------------------
     // LOWE'S
-    // -------------------------------
-    match = clean.match(/"itemcurrentprice":\s*"([0-9]+\.[0-9]+)/);
+    // -----------------------
+    match = clean.match(/"itemprice":\s*"([0-9]+\.[0-9]+)"/);
     if (match) return `$${match[1]}`;
 
-    match = clean.match(/class="price[^"]*">\s*\$([0-9]+\.[0-9]+)/);
-    if (match) return `$${match[1]}`;
-
-    // -------------------------------
+    // -----------------------
     // STAPLES
-    // -------------------------------
-    match = clean.match(/class="price__value"[^>]*>\s*\$([0-9]+\.[0-9]+)/);
+    // -----------------------
+    match = clean.match(/"price":\s*"([0-9]+\.[0-9]+)"/);
     if (match) return `$${match[1]}`;
 
-    match = clean.match(/"price":\s*"([0-9]+\.[0-9]+)","currency"/);
-    if (match) return `$${match[1]}`;
-
-    // -------------------------------
+    // -----------------------
     // OFFICE DEPOT
-    // -------------------------------
-    match = clean.match(/"offerprice":\s*"([0-9]+\.[0-9]+)/);
+    // -----------------------
+    match = clean.match(/"offerprice":\s*"([0-9]+\.[0-9]+)"/);
     if (match) return `$${match[1]}`;
 
-    match = clean.match(/class="price"[^>]*>\s*\$([0-9]+\.[0-9]+)/);
-    if (match) return `$${match[1]}`;
-
-    // -------------------------------
-    // GENERIC E‑COMMERCE
-    // -------------------------------
-    match = clean.match(/ourprice[^>]*>\s*\$([0-9]+\.[0-9]+)/);
-    if (match) return `$${match[1]}`;
-
-    match = clean.match(/class="amount"[^>]*>\s*\$([0-9]+\.[0-9]+)/);
-    if (match) return `$${match[1]}`;
-
-    // -------------------------------
-    // UNIVERSAL FALLBACK
-    // -------------------------------
+    // -----------------------
+    // GENERIC FALLBACK
+    // -----------------------
     match = clean.match(/\$([0-9]+\.[0-9]+)/);
-    if (match) return `$${match[1]}`;
-
-    match = clean.match(/([0-9]+\.[0-9]+)/);
     if (match) return `$${match[1]}`;
 
     return "PRICE NOT AVAILABLE";

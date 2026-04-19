@@ -338,10 +338,10 @@ async function fetchPriceFromURL(url) {
     // -------------------------------
     // 3. WALMART (schema.org first)
     // -------------------------------
-    let schemaBlock = clean.match(/<script type="application\/ld\+json"[^>]*data-seo-id="schema-org-product"[^>]*>(.*?)<\/script>/);
-    if (schemaBlock) {
-    let schema = schemaBlock[1];
-    match = schema.match(/"price"\s*:\s*([0-9]+\.[0-9]+)/);
+    match = clean.match(/"pricecurrency":"usd","price":([0-9]+\.[0-9]+)/);
+    if (match) return `$${match[1]}`;
+
+    match = clean.match(/"price":([0-9]+\.[0-9]+),"availability":"https:\/\/schema\.org\/instock"/);
     if (match) return `$${match[1]}`;
       
     // -------------------------------

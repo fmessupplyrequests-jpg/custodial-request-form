@@ -300,24 +300,68 @@ nameField.addEventListener("input", () => {
 });
 
 // -------------------------------
-// PRICE LOOKUP FUNCTION
+// HYBRID PRICE SCRAPER
 // -------------------------------
 async function fetchPriceFromURL(url) {
   try {
     const response = await fetch(url);
     const html = await response.text();
 
-    // Regex to find prices like $12.49 or 12.49
-    const priceRegex = /\$?\s?(\d{1,3}(?:,\d{3})*(?:\.\d{2})?)/;
-    const match = html.match(priceRegex);
+    // Normalize HTML for easier matching
+    const clean = html.replace(/\s+/g, " ").toLowerCase();
 
-    if (match && match[1]) {
-      let price = match[1].replace(",", "");
-      if (!price.startsWith("$")) price = "$" + price;
-      return price;
-    }
+    // -------------------------------
+    // 1. AMAZON PATTERNS
+    // -------------------------------
+    // Example: "priceToPay":{"amount":49.99}
+    let match = clean.match(/"pricetopay":\s*\{\s*"amount":\s*([0-9]+\.[0-9]+)/);
+    if (match) return `$${match[1]}`;
 
+    // Example: "priceAmount":"49.99"
+    match = clean.match(/"priceamount":\s*"([0-9]+\.[0-9]+)/);
+    if (match) return `$${match[1]}`;
+
+    // Example: "price":"$49.99"
+    match = clean.match(/"price":\s*"\$?([0-9]+\.[0-9]+)/);
+    if (match) return `$${match[1]}`;
+
+    // -------------------------------
+    // 2. VIP OFFICE PATTERNS
+    // -------------------------------
+    // Example: <span class="price">$82.66</span>
+    match = clean.match(/class="price"[^>]*>\s*\$?([0-9]+\.[0-9]+)/);
+    if (match) return `$${match[1]}`;
+
+    // Example: <div id="priceblock">82.66</div>
+    match = clean.match(/price[^<>\d]*([0-9]+\.[0-9]+)/);
+    if (match) return `$${match[1]}`;
+
+    // -------------------------------
+    // 3. SUNCOAST / HASKINS / GENERIC ECOMMERCE
+    // -------------------------------
+    // Example: <span id="ourprice">$12.49</span>
+    match = clean.match(/ourprice[^>]*>\s*\$?([0-9]+\.[0-9]+)/);
+    if (match) return `$${match[1]}`;
+
+    // Example: <span class="amount">$12.49</span>
+    match = clean.match(/class="amount"[^>]*>\s*\$?([0-9]+\.[0-9]+)/);
+    if (match) return `$${match[1]}`;
+
+    // -------------------------------
+    // 4. UNIVERSAL FALLBACK REGEX
+    // -------------------------------
+    // Finds the FIRST price-like number on the page
+    match = clean.match(/\$([0-9]+\.[0-9]+)/);
+    if (match) return `$${match[1]}`;
+
+    match = clean.match(/([0-9]+\.[0-9]+)/);
+    if (match) return `$${match[1]}`;
+
+    // -------------------------------
+    // 5. FAILURE MODE
+    // -------------------------------
     return "PRICE NOT AVAILABLE";
+
   } catch (err) {
     return "PRICE NOT AVAILABLE";
   }

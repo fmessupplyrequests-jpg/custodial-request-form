@@ -335,14 +335,22 @@ async function fetchPriceFromURL(url) {
     match = clean.match(/price[^<>\d]*([0-9]+\.[0-9]+)/);
     if (match) return `$${match[1]}`;
 
-    // -------------------------------
-    // 3. WALMART (schema.org first)
-    // -------------------------------
-    match = clean.match(/"pricecurrency":"usd","price":([0-9]+\.[0-9]+)/);
+    //-------------------------------
+    // WALMART
+    //-------------------------------
+
+    // 1) schema.org product block (most reliable)
+    match = clean.match(/"@type":"product"[^}]*"pricecurrency":"usd","price":([0-9]+\.[0-9]+)/);
     if (match) return `$${match[1]}`;
 
+    // 2) plain schema.org price + availability (fallback)
     match = clean.match(/"price":([0-9]+\.[0-9]+),"availability":"https:\/\/schema\.org\/instock"/);
     if (match) return `$${match[1]}`;
+
+    // 3) generic but still Walmart‑leaning JSON price (last resort for Walmart)
+    match = clean.match(/"price":([0-9]+\.[0-9]+),"pricevaliduntil"/);
+    if (match) return `$${match[1]}`;
+
       
     // -------------------------------
     // 4. TARGET

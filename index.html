@@ -409,13 +409,19 @@ async function fetchPriceFromURL(url) {
     return "PRICE NOT AVAILABLE";
 
   } catch (err) {
-    return "PRICE NOT AVAILABLE";
-  }
+  return "PRICE NOT AVAILABLE";
 }
-  
+}
+
+// TEMPORARY placeholder so the script doesn't crash
+function validateForm() {
+  // intentionally empty
+}
+
 // -------------------------------
 // CREATE ITEM BLOCK
 // -------------------------------
+
 function createItemBlock() {
   if (itemCount >= maxItems) return;
 

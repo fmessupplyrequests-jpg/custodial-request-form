@@ -563,7 +563,7 @@ function createItemBlock() {
 
   validateForm();
 }
-/*
+
 // ------------------------------
 // FORM VALIDATION + FIELD LOGIC
 // ------------------------------
@@ -575,11 +575,11 @@ function validateForm() {
   let allItemsValid = true;
 
   items.forEach(item => {
-    const product = item.querySelector(".product-dropdown").value.trim();
-    const qty = item.querySelector(".quantity-field").value.trim();
-    const desc = item.querySelector(".description-field")?.value.trim() || "";
-    const vendor = item.querySelector(".vendor-field")?.value.trim() || "";
-    const url = item.querySelector(".url-field")?.value.trim() || "";
+    const product = item.querySelector(".productSelect").value.trim();
+    const qty = item.querySelector(".qtyField").value.trim();
+    const desc = item.querySelector(".descField")?.value.trim() || "";
+    const vendor = item.querySelector(".vendorField")?.value.trim() || "";
+    const url = item.querySelector(".urlField")?.value.trim() || "";
 
     // Custom Request requires ALL fields
     if (product === "Custom Request") {
@@ -587,7 +587,7 @@ function validateForm() {
         allItemsValid = false;
       }
     } else {
-      // Normal items only require product + quantity
+      // Standard items require product + quantity only
       if (!product || !qty) {
         allItemsValid = false;
       }
@@ -600,9 +600,9 @@ function validateForm() {
 
 // Reset quantity when product dropdown changes
 document.addEventListener("change", (e) => {
-  if (e.target.classList.contains("product-dropdown")) {
+  if (e.target.classList.contains("productSelect")) {
     const itemBlock = e.target.closest(".item-block");
-    const qtyField = itemBlock.querySelector(".quantity-field");
+    const qtyField = itemBlock.querySelector(".qtyField");
 
     qtyField.value = ""; // reset quantity
     validateForm();
@@ -612,16 +612,16 @@ document.addEventListener("change", (e) => {
 // Revalidate on ANY input change
 document.addEventListener("input", (e) => {
   if (
-    e.target.classList.contains("quantity-field") ||
-    e.target.classList.contains("description-field") ||
-    e.target.classList.contains("vendor-field") ||
-    e.target.classList.contains("url-field") ||
+    e.target.classList.contains("qtyField") ||
+    e.target.classList.contains("descField") ||
+    e.target.classList.contains("vendorField") ||
+    e.target.classList.contains("urlField") ||
     e.target.id === "requesterName"
   ) {
     validateForm();
   }
 });
-*/
+
 // -------------------------------
 // SUBMIT FORM
 // -------------------------------

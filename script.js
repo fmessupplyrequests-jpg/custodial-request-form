@@ -324,4 +324,4 @@ Unit Price: ${price}
 // -------------------------------
 createItemBlock();
 addItemBtn.addEventListener("click", createItemBlock);
-submitBtn.disabled = !(requesterName && dateNeeded && allItemsValid);
+

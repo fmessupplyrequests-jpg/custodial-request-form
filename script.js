@@ -10,6 +10,7 @@ const maxItems = 19;
 let itemCount = 0;
 
 const nameField = document.getElementById("requesterName");
+const dateNeeded = dateNeededField.value.trim();
 const supplyForm = document.getElementById("supplyForm");
 const addItemBtn = document.getElementById("addItemBtn");
 const submitBtn = document.getElementById("submitBtn");
@@ -266,7 +267,7 @@ function validateForm() {
     }
   });
 
-  submitBtn.disabled = !(requesterName && allItemsValid);
+  submitBtn.disabled = !(requesterName && dateNeeded && allItemsValid);
 }
 
 // -------------------------------

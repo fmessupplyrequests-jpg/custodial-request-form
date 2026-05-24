@@ -1,9 +1,4 @@
 // -------------------------------
-// EMAILJS SETUP
-// -------------------------------
-emailjs.init("9Oy_yjfgv48qihRMN");
-
-// -------------------------------
 // GLOBAL SETTINGS
 // -------------------------------
 const maxItems = 19;
@@ -271,52 +266,92 @@ function validateForm() {
   submitBtn.disabled = !(requesterName && dateNeeded && allItemsValid);
 }
 
-
 // -------------------------------
-// SUBMIT FORM
+// SUBMIT FORM TO APPS SCRIPT
 // -------------------------------
-submitBtn.addEventListener("click", () => {
-  const requester = nameField.value.trim();
-  const dateNeeded = dateNeededField.value;
-  const timestamp = new Date().toLocaleString();
-  const blocks = document.querySelectorAll(".item-block");
 
-  let emailBody = `
-Custodial Supply Request
-Submitted by: ${requester}
-Date: ${timestamp}
+const APPS_SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbwGDxVeF8FfPnE23FO79esxBaHivlxGcXLXRDah4ujMljqfF_YelWySzA40Mm8Mk6TF/exec";
 
-`;
+submitBtn.addEventListener("click", async () => {
 
-  blocks.forEach((block, index) => {
-    const product = block.querySelector(".productSelect").value;
-    const qty = block.querySelector(".qtyField").value;
-    const desc = block.querySelector(".descField").value;
-    const vendor = block.querySelector(".vendorField").value;
-    const url = block.querySelector(".urlField").value;
-    const price = block.querySelector(".priceField").value;
+  const requester =
+    nameField.value.trim();
 
-    emailBody += `
-Item ${index + 1}:
-Product: ${product}
-Quantity: ${qty}
-Description: ${desc}
-Vendor: ${vendor}
-URL: ${url}
-Unit Price: ${price}
+  const dateNeeded =
+    dateNeededField.value;
 
-`;
+  const blocks =
+    document.querySelectorAll(".item-block");
+
+  const items = [];
+
+  blocks.forEach(block => {
+
+    items.push({
+      product:
+        block.querySelector(".productSelect").value,
+
+      quantity:
+        block.querySelector(".qtyField").value,
+
+      description:
+        block.querySelector(".descField").value,
+
+      vendor:
+        block.querySelector(".vendorField").value,
+
+      url:
+        block.querySelector(".urlField").value,
+
+      price:
+        block.querySelector(".priceField").value
+    });
   });
 
-  emailjs.send("service_gjboq38", "template_xob2g87", {
-    subject: "Custodial Supply Request",
-    message: emailBody
-  }).then(() => {
+  const payload = {
+    requester,
+    dateNeeded,
+    items
+  };
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Submitting...";
+
+  try {
+
+    await fetch(APPS_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type":
+          "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify(payload)
+    });
+
     alert("Request submitted!");
-  }).catch(err => {
-    alert("Error sending request.");
+
+    // Reset form
+    supplyForm.innerHTML = "";
+
+    itemCount = 0;
+
+    createItemBlock();
+
+    validateForm();
+
+  } catch (err) {
+
     console.error(err);
-  });
+
+    alert("Error submitting request.");
+  }
+
+  submitBtn.textContent =
+    "Submit Request";
+
+  validateForm();
 });
 
 // -------------------------------

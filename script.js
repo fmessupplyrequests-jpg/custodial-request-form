@@ -247,6 +247,7 @@ function setProductFields(value, descField, vendorField, urlField, priceField) {
 // -------------------------------
 function validateForm() {
   const requesterName = nameField.value.trim();
+  const dateNeeded = dateNeededField.value.trim();
   const items = document.querySelectorAll(".item-block");
 
   let allItemsValid = items.length > 0;
@@ -265,9 +266,10 @@ function validateForm() {
     } else if (!product || !qty) {
       allItemsValid = false;
     }
-    
-  submitBtn.disabled = !(requesterName && dateNeeded && allItemsValid);
   });
+
+  submitBtn.disabled = !(requesterName && dateNeeded && allItemsValid);
+}
 
 
 // -------------------------------

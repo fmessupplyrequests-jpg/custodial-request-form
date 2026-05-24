@@ -275,6 +275,8 @@ function validateForm() {
 // -------------------------------
 submitBtn.addEventListener("click", () => {
   const requester = nameField.value.trim();
+  const dateNeeded = dateNeededField.value;
+  const dateNeeded = dateNeededField.value;
   const timestamp = new Date().toLocaleString();
   const blocks = document.querySelectorAll(".item-block");
 
@@ -321,4 +323,4 @@ Unit Price: ${price}
 // -------------------------------
 createItemBlock();
 addItemBtn.addEventListener("click", createItemBlock);
-
+submitBtn.disabled = !(requesterName && dateNeeded && allItemsValid);

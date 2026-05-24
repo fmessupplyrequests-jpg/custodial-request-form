@@ -10,7 +10,7 @@ const maxItems = 19;
 let itemCount = 0;
 
 const nameField = document.getElementById("requesterName");
-const dateNeeded = dateNeededField.value.trim();
+const dateNeededField = document.getElementById("dateNeeded");
 const supplyForm = document.getElementById("supplyForm");
 const addItemBtn = document.getElementById("addItemBtn");
 const submitBtn = document.getElementById("submitBtn");
@@ -275,7 +275,6 @@ function validateForm() {
 // -------------------------------
 submitBtn.addEventListener("click", () => {
   const requester = nameField.value.trim();
-  const dateNeeded = dateNeededField.value;
   const dateNeeded = dateNeededField.value;
   const timestamp = new Date().toLocaleString();
   const blocks = document.querySelectorAll(".item-block");

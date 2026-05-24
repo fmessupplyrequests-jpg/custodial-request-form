@@ -265,10 +265,10 @@ function validateForm() {
     } else if (!product || !qty) {
       allItemsValid = false;
     }
+    
+  submitBtn.disabled = !(requesterName && dateNeeded && allItemsValid);
   });
 
-  submitBtn.disabled = !(requesterName && dateNeeded && allItemsValid);
-}
 
 // -------------------------------
 // SUBMIT FORM

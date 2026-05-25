@@ -82,11 +82,10 @@ function createItemBlock() {
     <input type="text" class="urlField" placeholder="" readonly>
 
     <label>Unit Price</label>
-    const price = item.querySelector(".priceField").value.trim();
+    <input type="text" class="priceField" placeholder="Enter unit price or N/A">
 
     <label>Quantity</label>
     <input type="number" class="qtyField" min="1">
-      if (!product || !qty || !price)
 
     <button class="remove-btn" type="button">Remove Item</button>
   `;

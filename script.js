@@ -79,8 +79,8 @@ function createItemBlock() {
     <input type="text" class="vendorField" placeholder="" readonly>
 
     <label>URL</label>
-    <input type="text" class="urlField" placeholder="" readonly>
-
+    <input type="url" class="urlField" placeholder="" readonly>
+    
     <label>Unit Price</label>
     <input type="text" class="priceField" placeholder="Enter unit price or N/A">
 
@@ -96,6 +96,12 @@ function createItemBlock() {
   const descField = block.querySelector(".descField");
   const vendorField = block.querySelector(".vendorField");
   const urlField = block.querySelector(".urlField");
+   urlField.style.cursor = "pointer";
+   urlField.addEventListener("click", () => {
+    if (urlField.value && urlField.value !== "TBD") {
+     window.open(urlField.value, "_blank");
+  }
+});
   const priceField = block.querySelector(".priceField");
   const qtyField = block.querySelector(".qtyField");
   const removeBtn = block.querySelector(".remove-btn");

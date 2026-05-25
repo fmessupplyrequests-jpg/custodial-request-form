@@ -198,8 +198,7 @@ function validateForm() {
       allItemsValid = false;
 }
     }
-  });
-
+  
   submitBtn.disabled = !(requesterName && dateNeeded && allItemsValid);
 }
 

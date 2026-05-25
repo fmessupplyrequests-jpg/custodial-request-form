@@ -115,26 +115,8 @@ function createItemBlock() {
     validateForm();
   });
 
-  urlField.addEventListener("input", () => {
-    if (productSelect.value !== "Custom Request") return;
-
-    const url = urlField.value.trim();
-
-    if (url.length < 5) {
-      priceField.value = "";
-      validateForm();
-      return;
-    }
-
-    priceField.value = "Fetching...";
-
-    fetchPriceFromURL(url).then(price => {
-      priceField.value = price;
-      validateForm();
-    });
-  });
-
   qtyField.addEventListener("input", validateForm);
+  priceField.addEventListener("input", validateForm);
 
   removeBtn.addEventListener("click", () => {
     block.remove();
@@ -194,7 +176,8 @@ function validateForm() {
   const requesterName = nameField.value.trim();
   const dateNeeded = dateNeededField.value.trim();
   const items = document.querySelectorAll(".item-block");
-
+  const price = item.querySelector(".priceField").value.trim();
+  
   let allItemsValid = items.length > 0;
 
   items.forEach(item => {
@@ -203,13 +186,16 @@ function validateForm() {
     const desc = item.querySelector(".descField").value.trim();
     const vendor = item.querySelector(".vendorField").value.trim();
     const url = item.querySelector(".urlField").value.trim();
-
+    const price = item.querySelector(".priceField").value.trim();
+    
     if (product === "Custom Request") {
-      if (!product || !qty || !desc || !vendor || !url) {
-        allItemsValid = false;
-      }
-    } else if (!product || !qty) {
+    if (!product || !qty || !desc || !vendor || !url || !price) {
       allItemsValid = false;
+}
+      }
+  } else if (!product || !qty || !price) {
+      allItemsValid = false;
+}
     }
   });
 

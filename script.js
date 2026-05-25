@@ -56,57 +56,6 @@ function buildProductOptions() {
 }
 
 // -------------------------------
-// PRICE SCRAPER
-// -------------------------------
-async function fetchPriceFromURL(url) {
-  if (!url || url.toUpperCase() === "TBD") {
-    return "PRICE NOT AVAILABLE";
-  }
-
-  try {
-    const response = await fetch(
-      `https://gentle-field-d67e.michaeljleathers.workers.dev/?url=${encodeURIComponent(url)}`
-    );
-
-    const html = await response.text();
-    const clean = html.replace(/\s+/g, " ").toLowerCase();
-    let match;
-
-    match = clean.match(/"pricetopay":\s*\{\s*"amount":\s*([0-9]+\.[0-9]+)/);
-    if (match) return `$${match[1]}`;
-
-    match = clean.match(/"priceamount":\s*"([0-9]+\.[0-9]+)/);
-    if (match) return `$${match[1]}`;
-
-    match = clean.match(/"price":\s*"\$([0-9]+\.[0-9]+)"/);
-    if (match) return `$${match[1]}`;
-
-    match = clean.match(/"price":\s*"([0-9]+\.[0-9]+)"/);
-    if (match) return `$${match[1]}`;
-
-    match = clean.match(/"current_retail":\s*([0-9]+\.[0-9]+)/);
-    if (match) return `$${match[1]}`;
-
-    match = clean.match(/"price":\s*([0-9]+\.[0-9]+)/);
-    if (match) return `$${match[1]}`;
-
-    match = clean.match(/"itemprice":\s*"([0-9]+\.[0-9]+)"/);
-    if (match) return `$${match[1]}`;
-
-    match = clean.match(/"offerprice":\s*"([0-9]+\.[0-9]+)"/);
-    if (match) return `$${match[1]}`;
-
-    match = clean.match(/\$([0-9]+\.[0-9]+)/);
-    if (match) return `$${match[1]}`;
-
-    return "PRICE NOT AVAILABLE";
-  } catch (err) {
-    console.error("Price lookup failed:", err);
-    return "PRICE NOT AVAILABLE";
-  }
-}
-
-// -------------------------------
 // CREATE ITEM BLOCK
 // -------------------------------
 function createItemBlock() {
@@ -132,7 +81,8 @@ function createItemBlock() {
     <label>URL</label>
     <input type="text" class="urlField" placeholder="" readonly>
 
-    <input type="hidden" class="priceField" value="">
+    <label>Unit Price</label>
+    <input type="number" class="priceField" min="0" step="0.01" placeholder="Enter unit price">
 
     <label>Quantity</label>
     <input type="number" class="qtyField" min="1">

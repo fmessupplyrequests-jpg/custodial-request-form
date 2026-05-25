@@ -161,12 +161,7 @@ function setProductFields(value, descField, vendorField, urlField, priceField) {
   vendorField.value = product.vendor;
   urlField.value = product.url;
 
-  priceField.value = "Fetching...";
-
-  fetchPriceFromURL(product.url).then(price => {
-    priceField.value = price;
-    validateForm();
-  });
+  priceField.value = "";
 }
 
 // -------------------------------

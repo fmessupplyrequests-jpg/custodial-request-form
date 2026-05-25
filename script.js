@@ -177,30 +177,48 @@ function validateForm() {
   const requesterName = nameField.value.trim();
   const dateNeeded = dateNeededField.value.trim();
   const items = document.querySelectorAll(".item-block");
-  const price = item.querySelector(".priceField").value.trim();
-  
+
   let allItemsValid = items.length > 0;
 
   items.forEach(item => {
-    const product = item.querySelector(".productSelect").value.trim();
-    const qty = item.querySelector(".qtyField").value.trim();
-    const desc = item.querySelector(".descField").value.trim();
-    const vendor = item.querySelector(".vendorField").value.trim();
-    const url = item.querySelector(".urlField").value.trim();
-    const price = item.querySelector(".priceField").value.trim();
-    
+
+    const product =
+      item.querySelector(".productSelect").value.trim();
+
+    const qty =
+      item.querySelector(".qtyField").value.trim();
+
+    const desc =
+      item.querySelector(".descField").value.trim();
+
+    const vendor =
+      item.querySelector(".vendorField").value.trim();
+
+    const url =
+      item.querySelector(".urlField").value.trim();
+
+    const price =
+      item.querySelector(".priceField").value.trim();
+
+    // Custom request validation
     if (product === "Custom Request") {
-    if (!product || !qty || !desc || !vendor || !url || !price) {
-      allItemsValid = false;
-}
+
+      if (!product || !qty || !desc || !vendor || !url || !price) {
+        allItemsValid = false;
       }
-  } else if (!product || !qty || !price) {
-      allItemsValid = false;
-}
+
+    // Standard product validation
+    } else {
+
+      if (!product || !qty || !price) {
+        allItemsValid = false;
+      }
     }
-  
-  submitBtn.disabled = !(requesterName && dateNeeded && allItemsValid);
-}
+  });
+
+      submitBtn.disabled =
+        !(requesterName && dateNeeded && allItemsValid);
+  }
 
 // -------------------------------
 // SUBMIT FORM TO APPS SCRIPT

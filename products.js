@@ -16,7 +16,7 @@ const products = {
     category: "Paper Products",
     description: "Small roll bath tissue, GEN500",
     vendor: "VIP Office",
-    url: ["https://www.vipoffice.com/Product/GJO/2540096/1026772774" "https://www.vipoffice.com/Product/GJO/2550096/1026772775"]
+    url: ["https://www.vipoffice.com/Product/GJO/2540096/1026772774", "https://www.vipoffice.com/Product/GJO/2550096/1026772775"]
   },
 
   // TRASH BAGS

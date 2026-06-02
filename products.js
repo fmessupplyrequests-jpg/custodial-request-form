@@ -197,8 +197,8 @@ const products = {
     description: "24in wide dust mop head",
     vendor: "HASKINS DOYLE",
     url: "https://www.haskinsinc.com/catalog/CatalogProductDetail.aspx?itemno=MFM-DM24"
-  }
-
+  },
+  
   "Black Diamond 14in Green Pad": {
     short: "14in Green Pad",
     category: "Tools & Equipment",

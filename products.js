@@ -6,17 +6,17 @@ const products = {
   "Natural Multifold Towel": {
     short: "Multifold Towels",
     category: "Paper Products",
-    description: "Natural Multifold Towel, GEN1508",
+    description: "Natural Multifold Towel, GJO21100",
     vendor: "VIP Office",
-    url: "https://www.vipoffice.com/Product/GJO/21040/11970425"
+    url: "https://www.vipoffice.com/Product/GJO/21100/11970426"
   },
 
   "Toilet Tissue": {
     short: "Toilet Tissue",
     category: "Paper Products",
     description: "Small roll bath tissue, GEN500",
-    vendor: "TBD",
-    url: "TBD"
+    vendor: "VIP Office",
+    url: ["https://www.vipoffice.com/Product/GJO/2540096/1026772774" "https://www.vipoffice.com/Product/GJO/2550096/1026772775"]
   },
 
   // TRASH BAGS
@@ -145,8 +145,16 @@ const products = {
     short: "Pine-sol",
     category: "Cleaners & Chemicals",
     description: "Pine-sol Multi-Surface Cleaner",
-    vendor: "VIP",
+    vendor: "VIP Office",
     url: "https://www.vipoffice.com/Product/CLO/60160CT/1080428431"
+  },
+
+  "Pathfinder AP Carpet Cleaner": {
+    short: "Carpet Cleaner Solution",
+    category: "Cleaners & Chemicals",
+    description: "Carpet Cleaner in 5 Gallon Jug, ITEM #BUC-53705000",
+    vendor: "HASKINS DOYLE",
+    url: "https://www.haskinsinc.com/catalog/catalogproductdetail.aspx?itemno=BUC-53705000"
   },
 
   // PPE / GLOVES
@@ -171,24 +179,48 @@ const products = {
     short: "Dust Mop, (5inx60in)",
     category: "Tools & Equipment",
     description: "60in wide dust mop head",
-    vendor: "TBD",
-    url: "TBD"
+    vendor: "HASKINS DOYLE",
+    url: "https://www.haskinsinc.com/catalog/CatalogProductDetail.aspx?itemno=MFM-DM60"
   },
 
   "Dust Mop, 5inx36in": {
     short: "Dust Mop, (5inx36in)",
     category: "Tools & Equipment",
     description: "36in wide dust mop head",
-    vendor: "TBD",
-    url: "TBD"
+    vendor: "HASKINS DOYLE",
+    url: "https://www.haskinsinc.com/catalog/CatalogProductDetail.aspx?itemno=MFM-DM36"
   },
 
   "Dust Mop, 5inx24in": {
     short: "Dust Mop, (5inx24in)",
     category: "Tools & Equipment",
     description: "24in wide dust mop head",
-    vendor: "TBD",
-    url: "TBD"
+    vendor: "HASKINS DOYLE",
+    url: "https://www.haskinsinc.com/catalog/CatalogProductDetail.aspx?itemno=MFM-DM24"
   }
+
+  "Black Diamond 14in Green Pad": {
+    short: "14in Green Pad",
+    category: "Tools & Equipment",
+    description: "14in Green Pad for Floor Scrubber",
+    vendor: "HASKINS DOYLE",
+    url: "https://www.haskinsinc.com/catalog/CatalogProductDetail.aspx?itemno=AMR-FBD20G"
+  },
+
+"Black Diamond 14in Yellow Pad": {
+    short: "14in Yellow Pad",
+    category: "Tools & Equipment",
+    description: "14in Yellow Pad for Floor Scrubber",
+    vendor: "HASKINS DOYLE",
+    url: "https://www.haskinsinc.com/catalog/CatalogProductDetail.aspx?itemno=AMR-FBD20Y"
+  },
+
+"Black Diamond 14in White Pad": {
+    short: "14in White Pad",
+    category: "Tools & Equipment",
+    description: "14in White Pad for Floor Scrubber",
+    vendor: "HASKINS DOYLE",
+    url: "https://www.haskinsinc.com/catalog/CatalogProductDetail.aspx?itemno=AMR-FBD20W"
+  },
 };
 
